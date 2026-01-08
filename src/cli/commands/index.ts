@@ -4,3 +4,5 @@ export { createProfileCommand } from './profile.ts';
 export { createScanCommand } from './scan.ts';
 export { createSkillCommand } from './skill.ts';
 export { createAdaptCommand } from './adapt.ts';
+export { createStatusCommand } from './status.ts';
+export { createDoctorCommand } from './doctor.ts';

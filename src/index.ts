@@ -10,6 +10,8 @@ import { createProfileCommand } from './cli/commands/profile.ts';
 import { createScanCommand } from './cli/commands/scan.ts';
 import { createSkillCommand } from './cli/commands/skill.ts';
 import { createAdaptCommand } from './cli/commands/adapt.ts';
+import { createStatusCommand } from './cli/commands/status.ts';
+import { createDoctorCommand } from './cli/commands/doctor.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -56,22 +58,8 @@ program.addCommand(createProfileCommand());
 program.addCommand(createScanCommand());
 program.addCommand(createSkillCommand());
 program.addCommand(createAdaptCommand());
-
-program
-  .command('status')
-  .description('Show current profile and configuration status')
-  .action(() => {
-    console.log('kq status - Coming soon');
-    process.exit(0);
-  });
-
-program
-  .command('doctor')
-  .description('Diagnose configuration issues')
-  .action(() => {
-    console.log('kq doctor - Coming soon');
-    process.exit(0);
-  });
+program.addCommand(createStatusCommand());
+program.addCommand(createDoctorCommand());
 
 try {
   program.parse(process.argv);
