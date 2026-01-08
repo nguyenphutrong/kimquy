@@ -4,6 +4,7 @@ import { Command } from 'commander';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createInitCommand } from './cli/commands/init.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -44,15 +45,7 @@ program
     outputError: (str, write) => write(`\x1b[31m${str}\x1b[0m`),
   });
 
-program
-  .command('init')
-  .description('Initialize Kim Quy in current directory')
-  .option('-p, --profile <name>', 'Default profile name', 'default')
-  .option('-f, --force', 'Overwrite existing configuration')
-  .action(() => {
-    console.log('kq init - Coming soon');
-    process.exit(0);
-  });
+program.addCommand(createInitCommand());
 
 program
   .command('use <profile>')

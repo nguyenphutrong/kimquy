@@ -1,1 +1,1 @@
-export { initCommand } from './init.ts';
+export { createInitCommand } from './init.ts';
