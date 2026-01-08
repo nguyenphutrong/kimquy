@@ -1,3 +1,11 @@
 export { logger } from './logger.ts';
-export { KimQuyError, ConfigError, SkillError } from './errors.ts';
+export {
+  KimQuyError,
+  ConfigError,
+  ProfileError,
+  SkillError,
+  AdapterError,
+  FileSystemError,
+  isKimQuyError,
+} from './errors.ts';
 export * from './fs.ts';

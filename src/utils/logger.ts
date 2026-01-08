@@ -1,52 +1,65 @@
-type LogLevel = 'info' | 'success' | 'warn' | 'error' | 'debug';
+import pc from 'picocolors';
+import ora, { type Ora } from 'ora';
 
-const colors = {
-  reset: '\x1b[0m',
-  bold: '\x1b[1m',
-  dim: '\x1b[2m',
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  cyan: '\x1b[36m',
-};
+const isDebugEnabled = (): boolean =>
+  process.env.DEBUG === 'true' || process.argv.includes('--verbose');
 
-function formatMessage(level: LogLevel, message: string): string {
-  const prefix = {
-    info: `${colors.blue}ℹ${colors.reset}`,
-    success: `${colors.green}✔${colors.reset}`,
-    warn: `${colors.yellow}⚠${colors.reset}`,
-    error: `${colors.red}✖${colors.reset}`,
-    debug: `${colors.dim}◯${colors.reset}`,
-  };
+const isColorDisabled = (): boolean =>
+  process.env.NO_COLOR !== undefined || process.env.TERM === 'dumb';
 
-  return `${prefix[level]} ${message}`;
-}
+const formatMessage = (prefix: string, message: string): string => `${prefix} ${message}`;
 
 export const logger = {
   info(message: string): void {
-    console.log(formatMessage('info', message));
+    const prefix = isColorDisabled() ? 'ℹ' : pc.blue('ℹ');
+    console.log(formatMessage(prefix, message));
   },
 
   success(message: string): void {
-    console.log(formatMessage('success', message));
+    const prefix = isColorDisabled() ? '✔' : pc.green('✔');
+    console.log(formatMessage(prefix, message));
   },
 
   warn(message: string): void {
-    console.warn(formatMessage('warn', message));
+    const prefix = isColorDisabled() ? '⚠' : pc.yellow('⚠');
+    console.warn(formatMessage(prefix, message));
   },
 
   error(message: string): void {
-    console.error(formatMessage('error', message));
+    const prefix = isColorDisabled() ? '✖' : pc.red('✖');
+    console.error(formatMessage(prefix, message));
   },
 
   debug(message: string): void {
-    if (process.env.DEBUG) {
-      console.log(formatMessage('debug', colors.dim + message + colors.reset));
+    if (isDebugEnabled()) {
+      const prefix = isColorDisabled() ? '◯' : pc.dim('◯');
+      const text = isColorDisabled() ? message : pc.dim(message);
+      console.log(formatMessage(prefix, text));
     }
   },
 
   blank(): void {
+    console.log('');
+  },
+
+  spinner(text: string): Ora {
+    return ora({ text, color: 'cyan' });
+  },
+
+  table(data: Record<string, string>): void {
+    const maxKeyLength = Math.max(...Object.keys(data).map((k) => k.length));
+    for (const [key, value] of Object.entries(data)) {
+      const paddedKey = key.padEnd(maxKeyLength);
+      const keyText = isColorDisabled() ? paddedKey : pc.dim(paddedKey);
+      console.log(`  ${keyText}  ${value}`);
+    }
+  },
+
+  box(title: string, content: string): void {
+    const titleText = isColorDisabled() ? title : pc.bold(title);
+    console.log(`\n${titleText}`);
+    console.log(isColorDisabled() ? '─'.repeat(40) : pc.dim('─'.repeat(40)));
+    console.log(content);
     console.log('');
   },
 };
