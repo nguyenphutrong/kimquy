@@ -5,6 +5,7 @@ export interface Skill {
   tags: string[];
   profiles: string[];
   priority: 'low' | 'medium' | 'high';
+  triggers?: string[];
   content: string;
   filePath: string;
 }
@@ -15,6 +16,7 @@ export interface SkillFrontmatter {
   tags?: string[];
   profiles?: string[];
   priority?: 'low' | 'medium' | 'high';
+  triggers?: string[];
 }
 
 export type SkillPriority = 'low' | 'medium' | 'high';

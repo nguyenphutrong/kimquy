@@ -11,6 +11,7 @@ const frontmatterSchema = z.object({
   tags: z.array(z.string()).default([]),
   profiles: z.array(z.string()).default(['*']),
   priority: z.enum(['low', 'medium', 'high']).default('medium'),
+  triggers: z.array(z.string()).optional(),
 });
 
 function generateSkillId(filePath: string, name: string): string {
@@ -66,6 +67,7 @@ export function parseSkillContent(content: string, filePath: string): Skill {
     tags: fm.tags ?? [],
     profiles: fm.profiles ?? ['*'],
     priority: fm.priority ?? 'medium',
+    triggers: fm.triggers,
     content: parsed.content.trim(),
     filePath,
   };
