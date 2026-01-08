@@ -1,6 +1,8 @@
-import { defineConfig } from 'kimquy';
+// Kim Quy Configuration
+// See: https://github.com/nguyenphutrong/kimquy
 
-export default defineConfig({
+/** @type {import('kimquy').UserConfig} */
+export default {
   profiles: {
     work: {
       name: 'Work Profile',
@@ -22,4 +24,4 @@ export default defineConfig({
   },
   defaultProfile: 'work',
   skillPatterns: ['**/SKILL.md'],
-});
+};
