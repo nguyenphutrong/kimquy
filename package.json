@@ -1,12 +1,57 @@
 {
   "name": "kimquy",
-  "module": "index.ts",
+  "version": "0.1.0",
+  "description": "A powerful CLI tool to manage AI Profiles and Skills for AI coding assistants",
+  "author": "Trong Nguyen",
+  "license": "MIT",
   "type": "module",
-  "private": true,
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "kq": "./dist/index.js",
+    "kimquy": "./dist/index.js"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun build src/index.ts --outdir dist --target bun --format esm",
+    "start": "bun run dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "lint": "bunx @biomejs/biome check src/",
+    "lint:fix": "bunx @biomejs/biome check --write src/",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "cli",
+    "ai",
+    "profiles",
+    "skills",
+    "claude",
+    "cursor",
+    "coding-assistant",
+    "context-management"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nguyenphutrong/kimquy"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.0",
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "zod": "^4.3.5"
   }
 }

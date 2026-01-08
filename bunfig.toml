@@ -1,0 +1,10 @@
+[install]
+peer = false
+optional = true
+
+[run]
+silent = false
+
+[test]
+coverage = false
+coverageDir = "coverage"
