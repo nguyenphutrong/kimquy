@@ -9,6 +9,7 @@ import { createUseCommand } from './cli/commands/use.ts';
 import { createProfileCommand } from './cli/commands/profile.ts';
 import { createScanCommand } from './cli/commands/scan.ts';
 import { createSkillCommand } from './cli/commands/skill.ts';
+import { createAdaptCommand } from './cli/commands/adapt.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -54,17 +55,7 @@ program.addCommand(createUseCommand());
 program.addCommand(createProfileCommand());
 program.addCommand(createScanCommand());
 program.addCommand(createSkillCommand());
-
-program
-  .command('adapt')
-  .description('Generate config for AI tool')
-  .argument('[target]', 'Target AI tool (claude-code, cursor)')
-  .option('-a, --all', 'Generate for all configured adapters')
-  .option('--dry-run', 'Show what would be generated without writing')
-  .action((target?: string) => {
-    console.log(`kq adapt ${target || 'all'} - Coming soon`);
-    process.exit(0);
-  });
+program.addCommand(createAdaptCommand());
 
 program
   .command('status')
