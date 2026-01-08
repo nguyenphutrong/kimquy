@@ -8,6 +8,7 @@ import { createInitCommand } from './cli/commands/init.ts';
 import { createUseCommand } from './cli/commands/use.ts';
 import { createProfileCommand } from './cli/commands/profile.ts';
 import { createScanCommand } from './cli/commands/scan.ts';
+import { createSkillCommand } from './cli/commands/skill.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -52,25 +53,7 @@ program.addCommand(createInitCommand());
 program.addCommand(createUseCommand());
 program.addCommand(createProfileCommand());
 program.addCommand(createScanCommand());
-
-program
-  .command('skill')
-  .description('Manage skills')
-  .addCommand(
-    new Command('list')
-      .description('List skills for current profile')
-      .option('-a, --all', 'Show all skills')
-      .action(() => {
-        console.log('kq skill list - Coming soon');
-        process.exit(0);
-      })
-  )
-  .addCommand(
-    new Command('validate').description('Validate all SKILL.md files').action(() => {
-      console.log('kq skill validate - Coming soon');
-      process.exit(0);
-    })
-  );
+program.addCommand(createSkillCommand());
 
 program
   .command('adapt')
