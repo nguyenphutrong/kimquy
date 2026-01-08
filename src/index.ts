@@ -6,6 +6,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createInitCommand } from './cli/commands/init.ts';
 import { createUseCommand } from './cli/commands/use.ts';
+import { createProfileCommand } from './cli/commands/profile.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -48,35 +49,7 @@ program
 
 program.addCommand(createInitCommand());
 program.addCommand(createUseCommand());
-
-program
-  .command('profile')
-  .description('Manage profiles')
-  .addCommand(
-    new Command('list').description('List all profiles').action(() => {
-      console.log('kq profile list - Coming soon');
-      process.exit(0);
-    })
-  )
-  .addCommand(
-    new Command('create')
-      .argument('<name>', 'Profile name')
-      .description('Create a new profile')
-      .action((name: string) => {
-        console.log(`kq profile create ${name} - Coming soon`);
-        process.exit(0);
-      })
-  )
-  .addCommand(
-    new Command('delete')
-      .argument('<name>', 'Profile name')
-      .description('Delete a profile')
-      .option('-f, --force', 'Skip confirmation')
-      .action((name: string) => {
-        console.log(`kq profile delete ${name} - Coming soon`);
-        process.exit(0);
-      })
-  );
+program.addCommand(createProfileCommand());
 
 program
   .command('skill')
