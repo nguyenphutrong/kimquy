@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { createInitCommand } from './cli/commands/init.ts';
 import { createUseCommand } from './cli/commands/use.ts';
 import { createProfileCommand } from './cli/commands/profile.ts';
+import { createScanCommand } from './cli/commands/scan.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -50,6 +51,7 @@ program
 program.addCommand(createInitCommand());
 program.addCommand(createUseCommand());
 program.addCommand(createProfileCommand());
+program.addCommand(createScanCommand());
 
 program
   .command('skill')
@@ -69,15 +71,6 @@ program
       process.exit(0);
     })
   );
-
-program
-  .command('scan')
-  .description('Scan and index all skills')
-  .option('-d, --dir <directory>', 'Directory to scan')
-  .action(() => {
-    console.log('kq scan - Coming soon');
-    process.exit(0);
-  });
 
 program
   .command('adapt')
