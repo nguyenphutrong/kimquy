@@ -1,11 +1,13 @@
 import type { BaseAdapter } from './base.ts';
 import { ClaudeCodeAdapter } from './claude-code.ts';
+import { CursorAdapter } from './cursor.ts';
 
 class AdapterRegistry {
   private adapters: Map<string, BaseAdapter> = new Map();
 
   constructor() {
     this.register(new ClaudeCodeAdapter());
+    this.register(new CursorAdapter());
   }
 
   register(adapter: BaseAdapter): void {

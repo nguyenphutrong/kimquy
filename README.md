@@ -262,6 +262,22 @@ Generates configuration for [Claude Code](https://www.anthropic.com/claude-code)
 kq adapt claude-code
 ```
 
+### Cursor
+
+Generates configuration for [Cursor IDE](https://cursor.com).
+
+**Generated files:**
+- `.cursor/rules` - Cursor rules file with skill content
+
+**Usage:**
+```bash
+kq adapt cursor
+```
+
+**Notes:**
+- Skills are wrapped in markers to allow updates without losing manual rules
+- Existing rules outside the Kim Quy section are preserved
+
 ## Project Structure
 
 ```
