@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createInitCommand } from './cli/commands/init.ts';
+import { createUseCommand } from './cli/commands/use.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -46,14 +47,7 @@ program
   });
 
 program.addCommand(createInitCommand());
-
-program
-  .command('use <profile>')
-  .description('Switch to a profile')
-  .action((profile: string) => {
-    console.log(`kq use ${profile} - Coming soon`);
-    process.exit(0);
-  });
+program.addCommand(createUseCommand());
 
 program
   .command('profile')

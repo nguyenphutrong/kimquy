@@ -12,13 +12,10 @@
     "kq": "./dist/index.js",
     "kimquy": "./dist/index.js"
   },
-  "files": [
-    "dist",
-    "templates"
-  ],
+  "files": ["dist", "templates"],
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "build": "bun build src/index.ts --outdir dist --target bun --format esm",
+    "build": "bun build src/index.ts --outdir dist --target bun --format esm --packages external",
     "start": "bun run dist/index.js",
     "typecheck": "tsc --noEmit",
     "test": "bun test",
