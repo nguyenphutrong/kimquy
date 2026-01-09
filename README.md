@@ -1,15 +1,59 @@
-# Kim Quy
+<p align="center">
+  <img src="https://raw.githubusercontent.com/nguyenphutrong/kimquy/main/.github/assets/logo.png" alt="Kim Quy Logo" width="120" height="120" />
+</p>
 
-A CLI tool for managing AI Profiles and Skills for AI coding assistants like Claude Code, Cursor, and more.
+<h1 align="center">🐢 Kim Quy</h1>
 
-## Features
+<p align="center">
+  <strong>Manage AI Profiles and Skills for your AI coding assistants</strong>
+</p>
 
-- **Profile Management**: Switch between different AI contexts (work, personal, project-specific)
-- **Skill System**: Organize reusable AI instructions in `SKILL.md` files
-- **Adapter System**: Generate configuration for multiple AI tools from a single source
-- **TypeScript Config**: Full TypeScript support with `kimquy.config.ts`
+<p align="center">
+  <a href="https://www.npmjs.com/package/kimquy"><img src="https://img.shields.io/npm/v/kimquy?style=flat-square&color=blue" alt="npm version" /></a>
+  <a href="https://www.npmjs.com/package/kimquy"><img src="https://img.shields.io/npm/dm/kimquy?style=flat-square&color=green" alt="npm downloads" /></a>
+  <a href="https://github.com/nguyenphutrong/kimquy/blob/main/LICENSE"><img src="https://img.shields.io/github/license/nguyenphutrong/kimquy?style=flat-square" alt="license" /></a>
+  <a href="https://github.com/nguyenphutrong/kimquy/stargazers"><img src="https://img.shields.io/github/stars/nguyenphutrong/kimquy?style=flat-square" alt="GitHub stars" /></a>
+  <a href="https://bun.sh"><img src="https://img.shields.io/badge/bun-%3E%3D1.0.0-orange?style=flat-square" alt="Bun" /></a>
+</p>
 
-## Installation
+<p align="center">
+  <a href="#-features">Features</a> •
+  <a href="#-installation">Installation</a> •
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-documentation">Documentation</a> •
+  <a href="#-contributing">Contributing</a>
+</p>
+
+<p align="center">
+  <a href="./README.vi.md">🇻🇳 Tiếng Việt</a>
+</p>
+
+---
+
+## 🌟 Why Kim Quy?
+
+As AI coding assistants become an integral part of modern development workflows, managing context and instructions across different projects and tools becomes challenging. **Kim Quy** solves this by providing:
+
+- **🎯 Single Source of Truth**: Define your AI instructions once, deploy everywhere
+- **🔄 Profile Switching**: Instantly switch between work, personal, or project-specific contexts
+- **🛠️ Multi-Tool Support**: Works with Claude Code, Cursor, and more adapters coming soon
+- **📝 Skill System**: Organize reusable instructions in `SKILL.md` files with priority and tagging
+- **⚡ TypeScript First**: Full TypeScript support with type-safe configuration
+
+> **Kim Quy** (金龜) means "Golden Turtle" in Vietnamese - a legendary creature symbolizing wisdom and longevity.
+
+## ✨ Features
+
+| Feature | Description |
+|---------|-------------|
+| **Profile Management** | Switch between different AI contexts (work, personal, project-specific) |
+| **Skill System** | Organize reusable AI instructions in `SKILL.md` files |
+| **Adapter System** | Generate configuration for multiple AI tools from a single source |
+| **TypeScript Config** | Full TypeScript support with `kimquy.config.ts` |
+| **CLI Interface** | Intuitive command-line interface with helpful diagnostics |
+| **Validation** | Built-in validation for skill files and configuration |
+
+## 📦 Installation
 
 ### Using Bun (Recommended)
 
@@ -23,6 +67,12 @@ bun add -g kimquy
 npm install -g kimquy
 ```
 
+### Using pnpm
+
+```bash
+pnpm add -g kimquy
+```
+
 ### From Source
 
 ```bash
@@ -33,7 +83,7 @@ bun run build
 bun link
 ```
 
-## Quick Start
+## 🚀 Quick Start
 
 ### 1. Initialize Kim Quy in your project
 
@@ -91,9 +141,23 @@ This generates `.claude/skills.md` and `.claude/settings.local.json` for Claude 
 kq status
 ```
 
-## CLI Commands
+## 📖 Documentation
 
-### `kq init`
+### CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `kq init` | Initialize Kim Quy in a directory |
+| `kq use <profile>` | Switch to a different profile |
+| `kq profile` | Manage profiles (list, show, create, delete) |
+| `kq scan` | Scan and index all skills |
+| `kq skill` | Manage skills (list, validate) |
+| `kq adapt <adapter>` | Generate configuration for AI tools |
+| `kq status` | Show current configuration status |
+| `kq doctor` | Diagnose configuration issues |
+
+<details>
+<summary><b>📌 kq init</b></summary>
 
 Initialize Kim Quy in a directory.
 
@@ -105,7 +169,10 @@ Options:
   --force           Overwrite existing configuration
 ```
 
-### `kq use <profile>`
+</details>
+
+<details>
+<summary><b>📌 kq use</b></summary>
 
 Switch to a different profile.
 
@@ -114,7 +181,10 @@ kq use work
 kq use personal
 ```
 
-### `kq profile`
+</details>
+
+<details>
+<summary><b>📌 kq profile</b></summary>
 
 Manage profiles.
 
@@ -125,7 +195,10 @@ kq profile create <name>     # Create a new profile
 kq profile delete <name>     # Delete a profile
 ```
 
-### `kq scan`
+</details>
+
+<details>
+<summary><b>📌 kq scan</b></summary>
 
 Scan and index all skills.
 
@@ -139,7 +212,10 @@ Options:
   -q, --quiet       Only show summary
 ```
 
-### `kq skill`
+</details>
+
+<details>
+<summary><b>📌 kq skill</b></summary>
 
 Manage skills.
 
@@ -153,37 +229,27 @@ kq skill validate [options]  # Validate SKILL.md files
   -v, --verbose              # Show detailed errors
 ```
 
-### `kq adapt`
+</details>
+
+<details>
+<summary><b>📌 kq adapt</b></summary>
 
 Generate configuration for AI tools.
 
 ```bash
 kq adapt <adapter> [options]
 kq adapt claude-code         # Generate Claude Code config
+kq adapt cursor              # Generate Cursor config
 kq adapt --all               # Run all adapters
 kq adapt --dry-run           # Preview changes
 kq adapt --clean             # Remove generated files
 ```
 
-### `kq status`
+</details>
 
-Show current configuration status.
+### Configuration
 
-```bash
-kq status
-```
-
-### `kq doctor`
-
-Diagnose configuration issues.
-
-```bash
-kq doctor
-```
-
-## Configuration
-
-### `kimquy.config.ts`
+#### `kimquy.config.ts`
 
 ```typescript
 export default {
@@ -207,7 +273,7 @@ export default {
 };
 ```
 
-### Profile Options
+#### Profile Options
 
 | Option | Type | Description |
 |--------|------|-------------|
@@ -216,7 +282,7 @@ export default {
 | `skillDirs` | string[] | Directories to scan for skills |
 | `envVars` | object | Environment variables to set |
 
-## SKILL.md Format
+### SKILL.md Format
 
 Skills are Markdown files with YAML frontmatter:
 
@@ -235,20 +301,20 @@ triggers: [/my-command]
 Markdown content that will be provided to the AI.
 ```
 
-### Frontmatter Fields
+#### Frontmatter Fields
 
 | Field | Type | Required | Default | Description |
 |-------|------|----------|---------|-------------|
-| `name` | string | Yes | - | Skill name |
-| `description` | string | No | `""` | Brief description |
-| `tags` | string[] | No | `[]` | Tags for filtering |
-| `profiles` | string[] | No | `["*"]` | Profiles this skill applies to (`*` = all) |
-| `priority` | `low\|medium\|high` | No | `medium` | Skill priority |
-| `triggers` | string[] | No | - | Slash commands that trigger this skill |
+| `name` | string | ✅ | - | Skill name |
+| `description` | string | ❌ | `""` | Brief description |
+| `tags` | string[] | ❌ | `[]` | Tags for filtering |
+| `profiles` | string[] | ❌ | `["*"]` | Profiles this skill applies to (`*` = all) |
+| `priority` | `low\|medium\|high` | ❌ | `medium` | Skill priority |
+| `triggers` | string[] | ❌ | - | Slash commands that trigger this skill |
 
-## Adapters
+### Adapters
 
-### Claude Code
+#### Claude Code
 
 Generates configuration for [Claude Code](https://www.anthropic.com/claude-code).
 
@@ -257,28 +323,14 @@ Generates configuration for [Claude Code](https://www.anthropic.com/claude-code)
 - `.claude/settings.local.json` - Local settings
 - `.claude/commands/<trigger>.md` - Slash commands (if triggers defined)
 
-**Usage:**
-```bash
-kq adapt claude-code
-```
-
-### Cursor
+#### Cursor
 
 Generates configuration for [Cursor IDE](https://cursor.com).
 
 **Generated files:**
 - `.cursor/rules` - Cursor rules file with skill content
 
-**Usage:**
-```bash
-kq adapt cursor
-```
-
-**Notes:**
-- Skills are wrapped in markers to allow updates without losing manual rules
-- Existing rules outside the Kim Quy section are preserved
-
-## Project Structure
+### Project Structure
 
 ```
 your-project/
@@ -296,36 +348,72 @@ your-project/
     └── settings.local.json
 ```
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
-### "Kim Quy is not initialized"
+<details>
+<summary><b>"Kim Quy is not initialized"</b></summary>
 
 Run `kq init` in your project directory.
 
-### "No skills found"
+</details>
+
+<details>
+<summary><b>"No skills found"</b></summary>
 
 1. Check your `skillDirs` in `kimquy.config.ts`
 2. Run `kq scan` to discover skills
 3. Ensure your skill files are named `SKILL.md`
 
-### "Invalid frontmatter"
+</details>
+
+<details>
+<summary><b>"Invalid frontmatter"</b></summary>
 
 Run `kq skill validate --verbose` to see detailed errors.
 
-### Configuration issues
+</details>
+
+<details>
+<summary><b>Configuration issues</b></summary>
 
 Run `kq doctor` to diagnose problems.
 
-## Contributing
+</details>
 
-Contributions are welcome! Please read our contributing guidelines before submitting PRs.
+## 🗺️ Roadmap
+
+- [ ] **Windsurf Adapter** - Support for Windsurf IDE
+- [ ] **Zed Adapter** - Support for Zed editor
+- [ ] **VS Code Adapter** - Support for VS Code with AI extensions
+- [ ] **Skill Marketplace** - Share and discover community skills
+- [ ] **Team Profiles** - Shared profiles for teams
+- [ ] **Skill Inheritance** - Extend skills from base templates
+- [ ] **Watch Mode** - Auto-regenerate on skill changes
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting PRs.
 
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests: `bun test`
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## License
+See the [open issues](https://github.com/nguyenphutrong/kimquy/issues) for a list of proposed features and known issues.
 
-MIT License - see [LICENSE](LICENSE) for details.
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Inspired by the need for better AI context management
+- Built with [Bun](https://bun.sh), [Commander.js](https://github.com/tj/commander.js), and [Zod](https://zod.dev)
+- Thanks to all [contributors](https://github.com/nguyenphutrong/kimquy/graphs/contributors)
+
+---
+
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/nguyenphutrong">Trong Nguyen</a>
+</p>
