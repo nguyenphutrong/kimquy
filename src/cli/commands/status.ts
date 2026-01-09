@@ -1,12 +1,18 @@
 import { Command } from 'commander';
 import pc from 'picocolors';
 import { relative, resolve } from 'node:path';
-import { getConfig } from '../../core/config/loader.ts';
+import { loadConfig } from '../../core/config/loader.ts';
 import { getCurrentProfile, getState } from '../../core/state/store.ts';
 import { SkillIndexer } from '../../core/skill/indexer.ts';
 import { matchesProfile } from '../../core/skill/parser.ts';
 import { logger } from '../../utils/logger.ts';
-import { dirExists, fileExists, getKimQuyDir, getConfigPath } from '../../utils/fs.ts';
+import {
+  dirExists,
+  fileExists,
+  getKimQuyDir,
+  getConfigPath,
+  globalConfigExists,
+} from '../../utils/fs.ts';
 
 export function createStatusCommand(): Command {
   return new Command('status')
@@ -20,27 +26,43 @@ async function runStatus(): Promise<void> {
   const cwd = process.cwd();
   const kimquyDir = getKimQuyDir(cwd);
   const configPath = getConfigPath(cwd);
+  const hasGlobalConfig = globalConfigExists();
+  const hasProjectConfig = dirExists(kimquyDir);
 
   console.log();
   console.log(pc.bold('Kim Quy Status'));
   console.log(pc.dim('─'.repeat(50)));
 
-  if (!dirExists(kimquyDir)) {
+  if (!hasProjectConfig && !hasGlobalConfig) {
     console.log(`  ${pc.red('✗')} ${pc.dim('Initialized:')} No`);
     console.log();
     logger.info(`Run ${pc.cyan('kq init')} to initialize Kim Quy in this directory.`);
+    logger.info(`Run ${pc.cyan('kq init --global')} to initialize global configuration.`);
     process.exit(0);
   }
 
-  console.log(`  ${pc.green('✓')} ${pc.dim('Initialized:')} Yes`);
+  if (hasGlobalConfig) {
+    console.log(`  ${pc.green('✓')} ${pc.dim('Global Config:')} Yes`);
+  }
 
-  const relConfigPath = relative(cwd, configPath);
-  console.log(`  ${pc.dim('Config:')} ${relConfigPath}`);
+  if (hasProjectConfig) {
+    console.log(`  ${pc.green('✓')} ${pc.dim('Project Config:')} Yes`);
+    const relConfigPath = relative(cwd, configPath);
+    console.log(`  ${pc.dim('Config Path:')} ${relConfigPath}`);
+  } else {
+    console.log(`  ${pc.dim('−')} ${pc.dim('Project Config:')} No (using global only)`);
+  }
 
   try {
-    const config = await getConfig(cwd);
-    const state = getState(cwd);
-    const currentProfile = getCurrentProfile(cwd) || config.defaultProfile;
+    const { config, globalConfigPath } = await loadConfig(cwd);
+    const state = hasProjectConfig ? getState(cwd) : { lastScanAt: null };
+    const currentProfile = hasProjectConfig
+      ? getCurrentProfile(cwd) || config.defaultProfile
+      : config.defaultProfile;
+
+    if (globalConfigPath) {
+      console.log(`  ${pc.dim('Global Path:')} ${globalConfigPath}`);
+    }
 
     console.log(`  ${pc.dim('Profile:')} ${pc.cyan(currentProfile)}`);
 

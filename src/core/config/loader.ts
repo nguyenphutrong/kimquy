@@ -1,38 +1,70 @@
 import { loadConfig as c12LoadConfig } from 'c12';
 import { dirname } from 'node:path';
 import { ConfigError } from '../../utils/errors.ts';
-import { findUpward, CONFIG_FILE_NAME } from '../../utils/fs.ts';
-import { defaultConfig, mergeWithDefaults } from './defaults.ts';
+import { findUpward, CONFIG_FILE_NAME, getGlobalConfigPath, fileExists } from '../../utils/fs.ts';
+import { defaultConfig, mergeWithDefaults, mergeConfigs } from './defaults.ts';
 import { configSchema, type KimQuyConfig } from './schema.ts';
 
 export interface LoadConfigResult {
   config: KimQuyConfig;
   configPath: string | null;
+  globalConfigPath: string | null;
   isDefault: boolean;
+}
+
+async function loadConfigFromPath(configPath: string): Promise<Partial<KimQuyConfig>> {
+  const { config } = await c12LoadConfig<Partial<KimQuyConfig>>({
+    name: 'kimquy',
+    cwd: dirname(configPath),
+    configFile: CONFIG_FILE_NAME,
+    defaultConfig: {},
+  });
+  return config || {};
+}
+
+export async function loadGlobalConfig(): Promise<Partial<KimQuyConfig> | null> {
+  const globalConfigPath = getGlobalConfigPath();
+
+  if (!fileExists(globalConfigPath)) {
+    return null;
+  }
+
+  try {
+    return await loadConfigFromPath(globalConfigPath);
+  } catch {
+    return null;
+  }
 }
 
 export async function loadConfig(cwd?: string): Promise<LoadConfigResult> {
   const searchDir = cwd || process.cwd();
+  const projectConfigPath = findUpward(CONFIG_FILE_NAME, searchDir);
+  const globalConfigPath = getGlobalConfigPath();
+  const hasGlobalConfig = fileExists(globalConfigPath);
 
-  const configPath = findUpward(CONFIG_FILE_NAME, searchDir);
-
-  if (!configPath) {
+  if (!projectConfigPath && !hasGlobalConfig) {
     return {
       config: defaultConfig,
       configPath: null,
+      globalConfigPath: null,
       isDefault: true,
     };
   }
 
   try {
-    const { config: userConfig } = await c12LoadConfig<Partial<KimQuyConfig>>({
-      name: 'kimquy',
-      cwd: dirname(configPath),
-      configFile: CONFIG_FILE_NAME,
-      defaultConfig: {},
-    });
+    let globalConfig: Partial<KimQuyConfig> = {};
+    let projectConfig: Partial<KimQuyConfig> = {};
 
-    const merged = mergeWithDefaults(userConfig || {});
+    if (hasGlobalConfig) {
+      globalConfig = await loadConfigFromPath(globalConfigPath);
+    }
+
+    if (projectConfigPath) {
+      projectConfig = await loadConfigFromPath(projectConfigPath);
+    }
+
+    const mergedUserConfig = mergeConfigs(globalConfig, projectConfig);
+    const merged = mergeWithDefaults(mergedUserConfig);
 
     const parseResult = configSchema.safeParse(merged);
 
@@ -49,7 +81,8 @@ export async function loadConfig(cwd?: string): Promise<LoadConfigResult> {
 
     return {
       config: parseResult.data,
-      configPath,
+      configPath: projectConfigPath,
+      globalConfigPath: hasGlobalConfig ? globalConfigPath : null,
       isDefault: false,
     };
   } catch (error) {
@@ -57,8 +90,9 @@ export async function loadConfig(cwd?: string): Promise<LoadConfigResult> {
       throw error;
     }
 
+    const configSource = projectConfigPath || globalConfigPath;
     throw new ConfigError(
-      `Failed to load config from ${configPath}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      `Failed to load config from ${configSource}: ${error instanceof Error ? error.message : 'Unknown error'}`,
       ['Ensure the config file is valid TypeScript', 'Check for syntax errors in your config']
     );
   }

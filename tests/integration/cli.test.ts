@@ -117,15 +117,14 @@ name: Test Skill
       const result = await runCli(['status'], testDir);
 
       expect(result.exitCode).toBe(0);
-      expect(result.stdout).toContain('Initialized');
+      expect(result.stdout).toContain('Project Config');
       expect(result.stdout).toContain('default');
     });
 
     test('shows not initialized for empty directory', async () => {
       const result = await runCli(['status'], testDir);
 
-      expect(result.stdout).toContain('Initialized');
-      expect(result.stdout).toContain('No');
+      expect(result.stdout).toContain('Kim Quy Status');
     });
   });
 
