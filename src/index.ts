@@ -12,6 +12,7 @@ import { createSkillCommand } from './cli/commands/skill.ts';
 import { createAdaptCommand } from './cli/commands/adapt.ts';
 import { createStatusCommand } from './cli/commands/status.ts';
 import { createDoctorCommand } from './cli/commands/doctor.ts';
+import { createImportCommand } from './cli/commands/import.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -60,6 +61,7 @@ program.addCommand(createSkillCommand());
 program.addCommand(createAdaptCommand());
 program.addCommand(createStatusCommand());
 program.addCommand(createDoctorCommand());
+program.addCommand(createImportCommand());
 
 try {
   program.parse(process.argv);
