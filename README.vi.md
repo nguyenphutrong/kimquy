@@ -20,6 +20,7 @@
   <a href="#-tính-năng">Tính năng</a> •
   <a href="#-cài-đặt">Cài đặt</a> •
   <a href="#-bắt-đầu-nhanh">Bắt đầu nhanh</a> •
+  <a href="#-best-practices">Best Practices</a> •
   <a href="#-tài-liệu">Tài liệu</a> •
   <a href="#-đóng-góp">Đóng góp</a>
 </p>
@@ -55,25 +56,27 @@ Khi các trợ lý lập trình AI trở thành một phần không thể thiế
 
 ## 📦 Cài đặt
 
-### Sử dụng Bun (Khuyến nghị)
+### Dành cho người dùng
+
+#### Sử dụng Bun (Khuyến nghị)
 
 ```bash
 bun add -g kimquy
 ```
 
-### Sử dụng npm
+#### Sử dụng npm
 
 ```bash
 npm install -g kimquy
 ```
 
-### Sử dụng pnpm
+#### Sử dụng pnpm
 
 ```bash
 pnpm add -g kimquy
 ```
 
-### Từ Mã nguồn
+#### Từ mã nguồn
 
 ```bash
 git clone https://github.com/nguyenphutrong/kimquy.git
@@ -83,19 +86,38 @@ bun run build
 bun link
 ```
 
+### Dành cho AI Agent
+
+Copy prompt sau vào AI coding assistant:
+
+```
+Install and configure agentlens by following the instructions at:
+https://github.com/nguyenphutrong/kimquy/blob/main/docs/ai-agent-setup.md
+```
+
 ## 🚀 Bắt đầu nhanh
 
-### 1. Khởi tạo Kim Quy trong dự án của bạn
+### 1. Khởi tạo Kim Quy
+
+Cấp project:
 
 ```bash
 cd your-project
 kq init --profile=default
 ```
 
+Cấp user (global):
+
+```bash
+kq init --global --profile=default
+```
+
 Lệnh này tạo ra:
 - `kimquy.config.ts` - File cấu hình
 - `.kimquy/` - Thư mục trạng thái
 - `skills/` - Thư mục skill mặc định với file `SKILL.md` mẫu
+
+Global config nằm ở `~/.config/kimquy/` và được merge với config của project (project ưu tiên).
 
 ### 2. Tạo một skill
 
@@ -141,6 +163,14 @@ Lệnh này tạo ra `.claude/skills.md` và `.claude/settings.local.json` cho C
 kq status
 ```
 
+## ✅ Best Practices
+
+- Dùng global config cho quy tắc chung, project config cho quy tắc riêng.
+- Giữ skills ngắn gọn, tập trung và gắn tag để dễ tìm.
+- Dùng profiles để tách ngữ cảnh work/personal.
+- Dùng triggers cho các quy trình lặp lại.
+- Sau khi sửa skills, chạy `kq scan` và `kq adapt`.
+
 ## 📖 Tài liệu
 
 ### Các lệnh CLI
@@ -155,11 +185,12 @@ kq status
 | `kq adapt <adapter>` | Tạo cấu hình cho công cụ AI |
 | `kq status` | Hiển thị trạng thái cấu hình hiện tại |
 | `kq doctor` | Chẩn đoán vấn đề cấu hình |
+| `kq import <tool>` | Import skills từ công cụ bên ngoài |
 
 <details>
 <summary><b>📌 kq init</b></summary>
 
-Khởi tạo Kim Quy trong thư mục.
+Khởi tạo Kim Quy trong thư mục hoặc global.
 
 ```bash
 kq init [options]
@@ -167,6 +198,7 @@ kq init [options]
 Options:
   --profile <name>  Tên profile ban đầu (mặc định: "default")
   --force           Ghi đè cấu hình hiện có
+  --global          Khởi tạo cấu hình global ở cấp user
 ```
 
 </details>
@@ -243,6 +275,20 @@ kq adapt cursor              # Tạo cấu hình Cursor
 kq adapt --all               # Chạy tất cả adapters
 kq adapt --dry-run           # Xem trước thay đổi
 kq adapt --clean             # Xóa các file đã tạo
+```
+
+</details>
+
+<details>
+<summary><b>📌 kq import</b></summary>
+
+Import skills từ công cụ bên ngoài.
+
+```bash
+kq import claude             # Import Claude Code commands
+kq import cursor             # Import Cursor rules
+kq import claude --output ./skills/claude
+kq import cursor --force
 ```
 
 </details>

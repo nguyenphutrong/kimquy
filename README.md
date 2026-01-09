@@ -20,6 +20,7 @@
   <a href="#-features">Features</a> •
   <a href="#-installation">Installation</a> •
   <a href="#-quick-start">Quick Start</a> •
+  <a href="#-best-practices">Best Practices</a> •
   <a href="#-documentation">Documentation</a> •
   <a href="#-contributing">Contributing</a>
 </p>
@@ -55,25 +56,27 @@ As AI coding assistants become an integral part of modern development workflows,
 
 ## 📦 Installation
 
-### Using Bun (Recommended)
+### For Human
+
+#### Using Bun (Recommended)
 
 ```bash
 bun add -g kimquy
 ```
 
-### Using npm
+#### Using npm
 
 ```bash
 npm install -g kimquy
 ```
 
-### Using pnpm
+#### Using pnpm
 
 ```bash
 pnpm add -g kimquy
 ```
 
-### From Source
+#### From Source
 
 ```bash
 git clone https://github.com/nguyenphutrong/kimquy.git
@@ -83,19 +86,38 @@ bun run build
 bun link
 ```
 
+### For AI Agent
+
+Copy this prompt to your AI coding assistant:
+
+```
+Install and configure agentlens by following the instructions at:
+https://github.com/nguyenphutrong/kimquy/blob/main/docs/ai-agent-setup.md
+```
+
 ## 🚀 Quick Start
 
-### 1. Initialize Kim Quy in your project
+### 1. Initialize Kim Quy
+
+Project-level:
 
 ```bash
 cd your-project
 kq init --profile=default
 ```
 
+User-level (global):
+
+```bash
+kq init --global --profile=default
+```
+
 This creates:
 - `kimquy.config.ts` - Configuration file
 - `.kimquy/` - State directory
 - `skills/` - Default skill directory with a sample `SKILL.md`
+
+Global config lives in `~/.config/kimquy/` and is merged with project config (project wins).
 
 ### 2. Create a skill
 
@@ -141,6 +163,14 @@ This generates `.claude/skills.md` and `.claude/settings.local.json` for Claude 
 kq status
 ```
 
+## ✅ Best Practices
+
+- Use global config for shared rules and project config for repo-specific rules.
+- Keep skills short, focused, and tagged for discoverability.
+- Use profiles to separate work/personal contexts.
+- Add triggers for repeatable workflows.
+- Run `kq scan` and `kq adapt` after skill changes.
+
 ## 📖 Documentation
 
 ### CLI Commands
@@ -155,11 +185,12 @@ kq status
 | `kq adapt <adapter>` | Generate configuration for AI tools |
 | `kq status` | Show current configuration status |
 | `kq doctor` | Diagnose configuration issues |
+| `kq import <tool>` | Import skills from external tools |
 
 <details>
 <summary><b>📌 kq init</b></summary>
 
-Initialize Kim Quy in a directory.
+Initialize Kim Quy in a directory or globally.
 
 ```bash
 kq init [options]
@@ -167,6 +198,7 @@ kq init [options]
 Options:
   --profile <name>  Initial profile name (default: "default")
   --force           Overwrite existing configuration
+  --global          Initialize global user-level configuration
 ```
 
 </details>
@@ -243,6 +275,20 @@ kq adapt cursor              # Generate Cursor config
 kq adapt --all               # Run all adapters
 kq adapt --dry-run           # Preview changes
 kq adapt --clean             # Remove generated files
+```
+
+</details>
+
+<details>
+<summary><b>📌 kq import</b></summary>
+
+Import skills from external tools.
+
+```bash
+kq import claude             # Import Claude Code commands
+kq import cursor             # Import Cursor rules
+kq import claude --output ./skills/claude
+kq import cursor --force
 ```
 
 </details>
