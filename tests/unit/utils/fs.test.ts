@@ -103,11 +103,11 @@ describe('File System Utils', () => {
 
   describe('path helpers', () => {
     test('getKimQuyDir returns .kimquy path', () => {
-      expect(getKimQuyDir('/project')).toBe('/project/.kimquy');
+      expect(getKimQuyDir('/project')).toBe(join('/project', '.kimquy'));
     });
 
     test('getConfigPath returns config path', () => {
-      expect(getConfigPath('/project')).toBe('/project/kimquy.config.ts');
+      expect(getConfigPath('/project')).toBe(join('/project', 'kimquy.config.ts'));
     });
   });
 });
