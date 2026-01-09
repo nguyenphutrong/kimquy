@@ -1,9 +1,11 @@
 import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
+import { homedir } from 'node:os';
 import { FileSystemError } from './errors.ts';
 
 export const CONFIG_FILE_NAME = 'kimquy.config.ts';
 export const STATE_DIR_NAME = '.kimquy';
+export const GLOBAL_CONFIG_DIR_NAME = '.config/kimquy';
 
 export function fileExists(filePath: string): boolean {
   try {
@@ -130,4 +132,24 @@ export function getKimQuyDir(baseDir?: string): string {
 
 export function getConfigPath(baseDir?: string): string {
   return join(baseDir || process.cwd(), CONFIG_FILE_NAME);
+}
+
+export function getGlobalConfigDir(): string {
+  return join(homedir(), GLOBAL_CONFIG_DIR_NAME);
+}
+
+export function getGlobalConfigPath(): string {
+  return join(getGlobalConfigDir(), CONFIG_FILE_NAME);
+}
+
+export function getGlobalKimQuyDir(): string {
+  return join(getGlobalConfigDir(), STATE_DIR_NAME);
+}
+
+export function getGlobalSkillsDir(): string {
+  return join(getGlobalConfigDir(), 'skills');
+}
+
+export function globalConfigExists(): boolean {
+  return fileExists(getGlobalConfigPath());
 }
